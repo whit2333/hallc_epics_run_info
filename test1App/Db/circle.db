@@ -1,0 +1,136 @@
+record(ao, "$(user):circle:step") {
+  field(VAL , "1.0")
+  field(DRVL, "0.0")
+  field(DRVH, "359")
+  field(PINI, "YES")
+}
+
+record(ao, "$(user):circle:period") {
+  field(VAL , "1.0")
+  field(PINI, "YES")
+  field(OUT , "$(user):circle:tick.ODLY NPP")
+}
+
+record(calc, "$(user):circle:angle") {
+  field(PINI, "RUNNING") # bootstrap
+  field(INPA, "$(user):circle:angle NPP")
+  field(INPB, "$(user):circle:step NPP")
+  field(INPD, "360")
+  field(DESC, "Angle")
+  field(EGU , "deg")
+  field(LOLO, "45")
+  field(LOW , "135")
+  field(HIGH, "225")
+  field(HIHI, "315")
+  field(LLSV, "MAJOR")
+  field(LSV , "MINOR")
+  field(HSV , "MINOR")
+  field(HHSV, "MAJOR")
+  field(CALC, "C:=A+B;(C>=D)?C-D:C")
+  field(FLNK, "$(user):circle:x")
+  field(PREC, "3")
+  info(Q:group, {
+      "$(user):circle":{"angle": {+channel:"VAL"}},
+      "$(user):line":{"a": {+channel:"VAL"}}
+  })
+  alias("$(user):line:a")
+}
+
+record(calc, "$(user):circle:x") {
+  field(INPA, "$(user):circle:angle NPP")
+  field(CALC, "cos(A*PI/180)")
+  field(TSEL, "$(user):circle:angle.TIME")
+  field(FLNK, "$(user):circle:y")
+  field(PREC, "3")
+  info(Q:group, {
+      "$(user):circle":{"x": {+channel:"VAL"}}
+  })
+}
+
+record(calc, "hcSHMSRunAccumulatedCharge") {
+  field(SCAN,"2 second")
+  field(INPA, "hcSHMSRunInProgress NPP")
+  field(INPB, "ibcm1 CP") 
+  field(INPC, "hcSHMSRunAccumulatedCharge.VAL NPP")
+  field(CALC, "A*2.0*B + C")
+  field(PREC, "4")
+  info(Q:group, {
+      "hcSHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
+  })
+}
+record(calc, "hcCOINRunAccumulatedCharge") {
+  field(SCAN,"2 second")
+  field(INPA, "hcCOINRunInProgress NPP")
+  field(INPB, "ibcm1 CPP") 
+  field(INPC, "hcCOINRunAccumulatedCharge.VAL PP")
+  field(CALC, "A*2.0*B + C")
+  field(PREC, "4")
+  info(Q:group, {
+      "hcSHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
+  })
+}
+
+#
+# Spectrometer angle encoder offsets
+#
+# Used to reliably calculate the spectrometer angle:
+#  theta = encoder + offset
+#
+record(ai, "hcHMSEncoderOffset") {
+  field(DESC, "HMS Angle Encoder Offset")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  field(PREC, "0")
+}
+record(ai, "hcSHMSEncoderOffset") {
+  field(DESC, "SHMS Angle Encoder Offset")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  field(PREC, "0")
+}
+
+#
+# DAQ run number (long integer type)
+#
+record(longi, "hcHMSIntRunNumber") {
+  field(DESC, "hallc HMS COIN run number")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  field(PREC, "0")
+}
+record(longi, "hcSHMSIntRunNumber") {
+  field(DESC, "hallc SHMS COIN run number")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  field(PREC, "0")
+}
+record(longi, "hcCOINIntRunNumber") {
+  field(DESC, "hallc CODA COIN run number")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  field(PREC, "0")
+}
+
+record(calc, "$(user):circle:y") {
+  field(INPA, "$(user):circle:angle NPP")
+  field(CALC, "sin(A*PI/180)")
+  field(TSEL, "$(user):circle:angle.TIME")
+  field(PREC, "3")
+  field(FLNK, "$(user):line:b")
+  info(Q:group, {
+      "$(user):circle":{"y": {+channel:"VAL", +trigger:"*"}}
+  })
+}
+
+record(ai, "$(user):line:b") {
+  field(INP, "$(user):line:a NPP")
+  field(FLNK, "$(user):circle:tick")
+  info(Q:group, {
+      "$(user):line":{"b": {+channel:"VAL", +trigger:"*"}}
+  })
+}
+
+record(calcout, "$(user):circle:tick") {
+  field(ODLY, "1.0")
+  field(OUT , "$(user):circle:angle.PROC CA") # loop
+}
