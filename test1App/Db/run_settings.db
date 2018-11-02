@@ -1,0 +1,198 @@
+########################################################
+# Tracking run settings
+########################################################
+#
+# A setting change:
+#   1) Different target (done)
+#   2) Different spectrometer angle (done)
+#   3) Different spectrometer momentum (done)
+#   4) Different DAQ prescales ( incomplete )
+#   5) 
+#
+
+record(longin, "hcRunSettingNumber") {
+  field(SCAN, "Passive")
+  field(DESC, "hallc run plan setting number")
+  field(DTYP, "Soft Channel")
+}
+record(longin, "hcRunSettingReconfigured") {
+  field(SCAN, "Passive")
+  field(DESC, "Waits to increment the RunSettingNumber")
+  field(DTYP, "Soft Channel")
+}
+
+#########################################
+#
+record(ai, "hcRunSettingHMSAngle") {
+  field(DESC, "HMS Angle for current run setting")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  #field(FLNK, "hcHMSCorrectedAngle")
+  field(PREC, "5")
+}
+record(ai, "hcRunSettingSHMSAngle") {
+  field(DESC, "SHMS Angle for current run setting")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+  #field(FLNK, "hcSHMSCorrectedAngle")
+  field(PREC, "5")
+}
+
+
+#
+# HMS Changes
+# 
+record(calcout, "hcHMSSettingChange") {
+  field(SCAN, "2 second")
+  field(OOPT, "On Change")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(OUT,  "hcRunSettingReconfigured CA")
+  field(INPA, "hcRunSettingReconfigured.VAL PP")
+  field(INPB, "hcHMSCorrectedAngle CP")
+  field(INPC, "hcRunSettingHMSAngle PP")
+  field(INPD, "hcHMSMomentum CP")
+  field(CALC, "(B-C)+D")
+  field(OCAL, "A+1")
+  field(PREC, "4")
+}
+
+#
+# SHMS Changed
+# 
+record(calcout, "hcSHMSSettingChange") {
+  field(SCAN, "2 second")
+  field(OOPT, "On Change")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(OUT,  "hcRunSettingReconfigured CA")
+  field(INPA, "hcRunSettingReconfigured.VAL PP")
+  field(INPB, "hcSHMSCorrectedAngle CP")
+  field(INPC, "hcRunSettingSHMSAngle PP")
+  field(INPD, "hcSHMSMomentum CP")
+  field(CALC, "B-C")
+  field(OCAL, "A+1")
+  field(PREC, "4")
+}
+
+
+#
+# Target changed
+#
+record(calc, "hcBDSSELECT_mirror") {
+  field(INPA, "hcBDSSELECT CP")
+  field(CALC, "A")
+  field(PREC, "2")
+}
+record(calcout, "hcTargetChange") {
+  #field(SCAN, "Passive")
+  field(SCAN, "2 second")
+  field(OOPT, "On Change")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(OUT,  "hcRunSettingReconfigured CA")
+  field(INPA, "hcRunSettingReconfigured.VAL PP")
+  field(INPB, "hcBDSSELECT_mirror CP")
+  field(CALC, "B")
+  field(OCAL, "1")
+  field(PREC, "4")
+}
+
+########################
+#
+# Increment the run setting 
+#
+
+record(calc, "hcCreateNewRunSetting") {
+  field(INPA, "hcSHMSRunInProgress CP")
+  field(CALC, "A")
+  field(PREC, "2")
+  field(FLNK,"hcRunSettingIncrement")
+}
+record(calcout, "hcRunSettingIncrement") {
+  field(OOPT, "Transition To Zero")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(OUT,  "hcRunSettingNumber CA")
+  field(INPA, "hcRunSettingNumber CA")
+  field(INPB, "hcRunSettingReconfigured CP")
+  field(CALC, "B==0? 0 : 1")
+  field(OCAL, "A+1")
+  field(PREC, "4")
+}
+
+#
+# When a new coda run starts and a setting has changed (hcRunSettingReconfigured!=0)
+# increment to the next run setting.
+#
+record(calcout, "hcResetRunSetting") {
+  field(OOPT, "Transition To Zero")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(INPA, "hcSHMSRunInProgress CP")
+  field(INPB, "hcRunSettingReconfigured PP")
+  field(CALC, "(A && (ABS(B)>0))? 0 : 1")
+  field(OUT,  "hcStartNewRunSetting CA")
+  field(OCAL, "0")
+  field(PREC, "4")
+}
+
+record(dfanout, "hcStartNewRunSetting"){
+  field(SCAN, "Passive")
+  field(DESC, "hallc run plan setting number")
+  field(OUTA, "hcRunSettingReconfigured CA")
+  field(OUTB, "hcRunSettingIncrement CA")
+  field(OUTC, "hcRunSettingChargeReset CA") 
+  field(OUTC, "hcRunSettingChargeReset CA") 
+}
+
+##############################################
+#
+# Setting charge/beam current
+#
+record(calc, "hcRunSettingAccumulatedCharge") {
+  field(SCAN,"2 second")
+  field(INPA, "hcSHMSRunInProgress PP")
+  field(INPB, "ibcm1 CPP") 
+  field(INPC, "hcRunSettingAccumulatedCharge.VAL PP")
+  field(CALC, "(B>0.5) ? (A*2.0*B + C) : C")
+  field(PREC, "10")
+}
+record(calc, "hcRunSettingTime") {
+  #field(SCAN, "Passive")
+  field(SCAN,"2 second")
+  field(INPA, "hcSHMSRunInProgress PP")
+  field(INPB, "ibcm1 CPP") 
+  field(INPC, "hcRunSettingTime.VAL PP")
+  field(CALC, "(B>0.5) ? (A*2.0 + C) : C")
+  field(PREC, "8")
+}
+
+record(calc, "hcRunSettingAverageBeamCurrent") {
+  field(SCAN,"2 second")
+  #field(SCAN,"Passive")
+  field(INPA, "hcRunSettingTime PP")
+  field(INPB, "hcRunSettingAccumulatedCharge PP") 
+  field(CALC, "B/A")
+  field(PREC, "4")
+}
+
+
+#
+# This output resets the accumulated charge when a new run is started.
+# If the DAQ crashes RunInProgress will remain 1. So instead of using 
+# RunInProgress we just look for changes to the set run number. Which
+# is set in the CODA start_of_run script.
+#
+record(calcout, "hcRunSettingChargeReset") {
+  field(OOPT, "Every Time")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(OUT,  "hcRunSettingAccumulatedCharge CA")
+  field(INPA, "hcRunSettingNumber CP")
+  field(CALC, "A")
+  field(OCAL, "0")
+  field(PREC, "4")
+  field(FLNK, "hcResetRunSettingTime")
+}
+record(calcout, "hcResetRunSettingTime") {
+  field(OOPT, "Every Time")
+  field(OUT,  "hcRunSettingTime CA")
+  field(INPA, "hcRunSettingTime PP")
+  field(CALC, "0.000001")
+}
+
