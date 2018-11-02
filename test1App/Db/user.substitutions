@@ -1,22 +1,22 @@
 # Example substitutions file
 
-file "db/circle.db" {
+file "db/daq_run.db" {
     { runtype = "COIN" }
     { runtype = "SHMS" }
     { runtype = "HMS" }
 }
 
-file "db/circle.db" {
-    { user = "whit" }
-}
-
-file "db/dbExample1.db" {
-    { user = "whit" }
-}
-
-file db/dbExample2.db {
-    pattern { user, no, scan }
-        { "whit", 1, "1 second" }
-        { "whit", 2, "2 second" }
-        { "whit", 3, "5 second" }
-}
+#file "db/circle.db" {
+#    { user = "whit" }
+#}
+#
+#file "db/dbExample1.db" {
+#    { user = "whit" }
+#}
+#
+#file db/dbExample2.db {
+#    pattern { user, no, scan }
+#        { "whit", 1, "1 second" }
+#        { "whit", 2, "2 second" }
+#        { "whit", 3, "5 second" }
+#}

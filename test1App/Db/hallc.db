@@ -1,142 +1,142 @@
 #
 # DAQ run number (long integer type)
 #
-record(longin, "hcHMSIntRunNumber") {
-  field(INP, "hcHMSRunNumber CP")
-  field(DESC, "hallc HMS COIN run number")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-record(longin, "hcSHMSIntRunNumber") {
-  field(INP,  "hcSHMSRunNumber CP")
-  field(DESC, "hallc SHMS COIN run number")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-record(longin, "hcCOINIntRunNumber") {
-  field(INP,  "hcCOINRunNumber CP")
-  field(DESC, "hallc CODA COIN run number")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-
+#record(longin, "hcHMSIntRunNumber") {
+#  field(INP, "hcHMSRunNumber CP")
+#  field(DESC, "hallc HMS COIN run number")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
+#record(longin, "hcSHMSIntRunNumber") {
+#  field(INP,  "hcSHMSRunNumber CP")
+#  field(DESC, "hallc SHMS COIN run number")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
+#record(longin, "hcCOINIntRunNumber") {
+#  field(INP,  "hcCOINRunNumber CP")
+#  field(DESC, "hallc CODA COIN run number")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
 #
-# accumulated charge for hallc bcm. 
-# Only integrates charge when hcHMSRunInProgress is true (ie, DAQ is taking data)
+##
+## accumulated charge for hallc bcm. 
+## Only integrates charge when hcHMSRunInProgress is true (ie, DAQ is taking data)
+##
+#record(calc, "hcHMSRunAccumulatedCharge") {
+#  field(SCAN,"2 second")
+#  field(INPA, "hcHMSRunInProgress NPP")
+#  field(INPB, "ibcm1 CP") 
+#  field(INPC, "hcHMSRunAccumulatedCharge.VAL NPP")
+#  field(CALC, "A*2.0*B + C")
+#  field(PREC, "4")
+#  info(Q:group, {
+#      "hcHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
+#  })
+#}
+#record(calc, "hcSHMSRunAccumulatedCharge") {
+#  field(SCAN,"2 second")
+#  field(INPA, "hcSHMSRunInProgress NPP")
+#  field(INPB, "ibcm1 CP") 
+#  field(INPC, "hcSHMSRunAccumulatedCharge.VAL NPP")
+#  field(CALC, "A*2.0*B + C")
+#  field(PREC, "4")
+#  info(Q:group, {
+#      "hcSHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
+#  })
+#}
+#record(calc, "hcHMSRunTime") {
+#  field(INPA, "hcHMSRunInProgress NPP")
+#  field(INPB, "ibcm1 CP") 
+#  field(INPC, "hcHMSRunTime.VAL NPP")
+#  field(CALC, "A*2.0 + C")
+#  field(PREC, "8")
+#}
+#record(calc, "hcSHMSRunTime") {
+#  field(SCAN, "2 second")
+#  field(INPA, "hcSHMSRunInProgress NPP")
+#  field(INPB, "ibcm1 CP") 
+#  field(INPC, "hcSHMSRunTime.VAL NPP")
+#  field(CALC, "A*2.0 + C")
+#  field(PREC, "8")
+#}
 #
-record(calc, "hcHMSRunAccumulatedCharge") {
-  field(SCAN,"2 second")
-  field(INPA, "hcHMSRunInProgress NPP")
-  field(INPB, "ibcm1 CP") 
-  field(INPC, "hcHMSRunAccumulatedCharge.VAL NPP")
-  field(CALC, "A*2.0*B + C")
-  field(PREC, "4")
-  info(Q:group, {
-      "hcHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
-  })
-}
-record(calc, "hcSHMSRunAccumulatedCharge") {
-  field(SCAN,"2 second")
-  field(INPA, "hcSHMSRunInProgress NPP")
-  field(INPB, "ibcm1 CP") 
-  field(INPC, "hcSHMSRunAccumulatedCharge.VAL NPP")
-  field(CALC, "A*2.0*B + C")
-  field(PREC, "4")
-  info(Q:group, {
-      "hcSHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
-  })
-}
-record(calc, "hcHMSRunTime") {
-  field(INPA, "hcHMSRunInProgress NPP")
-  field(INPB, "ibcm1 CP") 
-  field(INPC, "hcHMSRunTime.VAL NPP")
-  field(CALC, "A*2.0 + C")
-  field(PREC, "8")
-}
-record(calc, "hcSHMSRunTime") {
-  field(SCAN, "2 second")
-  field(INPA, "hcSHMSRunInProgress NPP")
-  field(INPB, "ibcm1 CP") 
-  field(INPC, "hcSHMSRunTime.VAL NPP")
-  field(CALC, "A*2.0 + C")
-  field(PREC, "8")
-}
-
+##
+## COIN charge/beam current
+##
+#record(calc, "hcCOINRunAccumulatedCharge") {
+#  field(SCAN,"2 second")
+#  field(INPA, "hcCOINRunInProgress PP")
+#  field(INPB, "ibcm1 CPP") 
+#  field(INPC, "hcCOINRunAccumulatedCharge.VAL PP")
+#  field(CALC, "(B>0.5) ? (A*2.0*B + C) : C")
+#  field(PREC, "10")
+#  #field(FLNK, "hcCOINRunTime")
+#}
+#record(calc, "hcCOINRunTime") {
+#  #field(SCAN, "Passive")
+#  field(SCAN,"2 second")
+#  field(INPA, "hcCOINRunInProgress PP")
+#  field(INPB, "ibcm1 CPP") 
+#  field(INPC, "hcCOINRunTime.VAL PP")
+#  field(CALC, "(B>0.5) ? (A*2.0 + C) : C")
+#  field(PREC, "8")
+#  #field(FLNK, "hcCOINRunAverageBeamCurrent")
+#}
 #
-# COIN charge/beam current
+#record(calc, "hcCOINRunAverageBeamCurrent") {
+#  field(SCAN,"2 second")
+#  #field(SCAN,"Passive")
+#  field(INPA, "hcCOINRunTime PP")
+#  field(INPB, "hcCOINRunAccumulatedCharge PP") 
+#  field(CALC, "B/A")
+#  field(PREC, "4")
+#}
 #
-record(calc, "hcCOINRunAccumulatedCharge") {
-  field(SCAN,"2 second")
-  field(INPA, "hcCOINRunInProgress PP")
-  field(INPB, "ibcm1 CPP") 
-  field(INPC, "hcCOINRunAccumulatedCharge.VAL PP")
-  field(CALC, "(B>0.5) ? (A*2.0*B + C) : C")
-  field(PREC, "10")
-  #field(FLNK, "hcCOINRunTime")
-}
-record(calc, "hcCOINRunTime") {
-  #field(SCAN, "Passive")
-  field(SCAN,"2 second")
-  field(INPA, "hcCOINRunInProgress PP")
-  field(INPB, "ibcm1 CPP") 
-  field(INPC, "hcCOINRunTime.VAL PP")
-  field(CALC, "(B>0.5) ? (A*2.0 + C) : C")
-  field(PREC, "8")
-  #field(FLNK, "hcCOINRunAverageBeamCurrent")
-}
-
-record(calc, "hcCOINRunAverageBeamCurrent") {
-  field(SCAN,"2 second")
-  #field(SCAN,"Passive")
-  field(INPA, "hcCOINRunTime PP")
-  field(INPB, "hcCOINRunAccumulatedCharge PP") 
-  field(CALC, "B/A")
-  field(PREC, "4")
-}
-
-
 #
-# This output resets the accumulated charge when a new run is started.
-# If the DAQ crashes RunInProgress will remain 1. So instead of using 
-# RunInProgress we just look for changes to the set run number. Which
-# is set in the CODA start_of_run script.
-#
-record(calcout, "hcSHMSRunChargeReset") {
-  field(SCAN, "2 second")
-  field(OOPT, "On Change")
-  field(DOPT, "Use OCAL") # to set OUT
-  field(OUT,  "hcSHMSRunAccumulatedCharge CA")
-  field(INPA, "hcSHMSRunNumber CP")
-  field(CALC, "A")
-  field(OCAL, "0.0")
-  field(PREC, "4")
-}
-record(calcout, "hcHMSRunChargeReset") {
-  field(SCAN, "2 second")
-  field(OOPT, "On Change")
-  field(DOPT, "Use OCAL") # to set OUT
-  field(OUT,  "hcHMSRunAccumulatedCharge CA")
-  field(INPA, "hcHMSRunNumber CP")
-  field(CALC, "A")
-  field(OCAL, "0.0")
-  field(PREC, "4")
-}
-record(calcout, "hcCOINRunChargeReset") {
-  field(OOPT, "On Change")
-  field(DOPT, "Use OCAL") # to set OUT
-  field(OUT,  "hcCOINRunAccumulatedCharge CA")
-  field(INPA, "hcCOINRunNumber CP")
-  field(CALC, "A")
-  field(OCAL, "0.0")
-  field(PREC, "4")
-  field(FLNK, "hcCOINResetRunTime")
-}
-record(calcout, "hcCOINResetRunTime") {
-  field(SCAN, "Passive")
-  field(OUT,  "hcCOINRunTime CA")
-  field(INPA, "hcCOINRunTime PP")
-  field(CALC, "0.0001")
-}
+##
+## This output resets the accumulated charge when a new run is started.
+## If the DAQ crashes RunInProgress will remain 1. So instead of using 
+## RunInProgress we just look for changes to the set run number. Which
+## is set in the CODA start_of_run script.
+##
+#record(calcout, "hcSHMSRunChargeReset") {
+#  field(SCAN, "2 second")
+#  field(OOPT, "On Change")
+#  field(DOPT, "Use OCAL") # to set OUT
+#  field(OUT,  "hcSHMSRunAccumulatedCharge CA")
+#  field(INPA, "hcSHMSRunNumber CP")
+#  field(CALC, "A")
+#  field(OCAL, "0.0")
+#  field(PREC, "4")
+#}
+#record(calcout, "hcHMSRunChargeReset") {
+#  field(SCAN, "2 second")
+#  field(OOPT, "On Change")
+#  field(DOPT, "Use OCAL") # to set OUT
+#  field(OUT,  "hcHMSRunAccumulatedCharge CA")
+#  field(INPA, "hcHMSRunNumber CP")
+#  field(CALC, "A")
+#  field(OCAL, "0.0")
+#  field(PREC, "4")
+#}
+#record(calcout, "hcCOINRunChargeReset") {
+#  field(OOPT, "On Change")
+#  field(DOPT, "Use OCAL") # to set OUT
+#  field(OUT,  "hcCOINRunAccumulatedCharge CA")
+#  field(INPA, "hcCOINRunNumber CP")
+#  field(CALC, "A")
+#  field(OCAL, "0.0")
+#  field(PREC, "4")
+#  field(FLNK, "hcCOINResetRunTime")
+#}
+#record(calcout, "hcCOINResetRunTime") {
+#  field(SCAN, "Passive")
+#  field(OUT,  "hcCOINRunTime CA")
+#  field(INPA, "hcCOINRunTime PP")
+#  field(CALC, "0.0001")
+#}
 
 #########################################################
 # Spectrometer angle encoder offsets
