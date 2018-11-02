@@ -7,7 +7,6 @@
 #   2) Different spectrometer angle (done)
 #   3) Different spectrometer momentum (done)
 #   4) Different DAQ prescales ( incomplete )
-#   5) 
 #
 
 record(longin, "hcRunSettingNumber") {
@@ -78,9 +77,10 @@ record(calcout, "hcSHMSSettingChange") {
 # Target changed
 #
 record(calc, "hcBDSSELECT_mirror") {
+  field(SCAN, "2 second")
   field(INPA, "hcBDSSELECT CP")
   field(CALC, "A")
-  field(PREC, "2")
+  field(PREC, "4")
 }
 record(calcout, "hcTargetChange") {
   #field(SCAN, "Passive")
@@ -91,7 +91,7 @@ record(calcout, "hcTargetChange") {
   field(INPA, "hcRunSettingReconfigured.VAL PP")
   field(INPB, "hcBDSSELECT_mirror CP")
   field(CALC, "B")
-  field(OCAL, "1")
+  field(OCAL, "A+1")
   field(PREC, "4")
 }
 
@@ -101,7 +101,7 @@ record(calcout, "hcTargetChange") {
 #
 
 record(calc, "hcCreateNewRunSetting") {
-  field(INPA, "hcSHMSRunInProgress CP")
+  field(INPA, "hcCOINRunInProgress CP")
   field(CALC, "A")
   field(PREC, "2")
   field(FLNK,"hcRunSettingIncrement")
@@ -124,7 +124,7 @@ record(calcout, "hcRunSettingIncrement") {
 record(calcout, "hcResetRunSetting") {
   field(OOPT, "Transition To Zero")
   field(DOPT, "Use OCAL") # to set OUT
-  field(INPA, "hcSHMSRunInProgress CP")
+  field(INPA, "hcCOINRunInProgress CP")
   field(INPB, "hcRunSettingReconfigured PP")
   field(CALC, "(A && (ABS(B)>0))? 0 : 1")
   field(OUT,  "hcStartNewRunSetting CA")
@@ -147,7 +147,7 @@ record(dfanout, "hcStartNewRunSetting"){
 #
 record(calc, "hcRunSettingAccumulatedCharge") {
   field(SCAN,"2 second")
-  field(INPA, "hcSHMSRunInProgress PP")
+  field(INPA, "hcCOINRunInProgress PP")
   field(INPB, "ibcm1 CPP") 
   field(INPC, "hcRunSettingAccumulatedCharge.VAL PP")
   field(CALC, "(B>0.5) ? (A*2.0*B + C) : C")
@@ -156,7 +156,7 @@ record(calc, "hcRunSettingAccumulatedCharge") {
 record(calc, "hcRunSettingTime") {
   #field(SCAN, "Passive")
   field(SCAN,"2 second")
-  field(INPA, "hcSHMSRunInProgress PP")
+  field(INPA, "hcCOINRunInProgress PP")
   field(INPB, "ibcm1 CPP") 
   field(INPC, "hcRunSettingTime.VAL PP")
   field(CALC, "(B>0.5) ? (A*2.0 + C) : C")
@@ -185,7 +185,7 @@ record(calcout, "hcRunSettingChargeReset") {
   field(OUT,  "hcRunSettingAccumulatedCharge CA")
   field(INPA, "hcRunSettingNumber CP")
   field(CALC, "A")
-  field(OCAL, "0")
+  field(OCAL, "0.0")
   field(PREC, "4")
   field(FLNK, "hcResetRunSettingTime")
 }

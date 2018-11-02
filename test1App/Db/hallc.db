@@ -176,18 +176,17 @@ record(calc, "hcSHMSCorrectedAngle") {
 }
 
 #
-# Momentum mirrored
+# Spectrometer Momentum (mirror)
 #
-record(ai, "hcHMS_MomentumDummy") {
-  field(DESC, "dummy hcHMS_MomentumDummy")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-  field(PREC, "4")
-}
+#record(ai, "hcHMS_MomentumDummy") {
+#  field(DESC, "dummy hcHMS_MomentumDummy")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#  field(PREC, "4")
+#}
 
 record(calc, "hcHMSMomentum") {
-  #field(INPA, "HMS_Momentum CP")
-  field(INPA, "hcHMS_MomentumDummy CP")
+  field(INPA, "HMS_Momentum CP")
   field(CALC, "A")
   field(PREC, "4")
 }

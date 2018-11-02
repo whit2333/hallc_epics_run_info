@@ -1,0 +1,66 @@
+#
+# DAQ run number (long integer type)
+#
+record(longin, "hc$(runtype)IntRunNumber") {
+  field(INP,  "hc$(runtype)RunNumber CP")
+  field(DESC, "hallc CODA $(runtype) run number")
+  field(DTYP, "Soft Channel")
+  field(SCAN, "Passive")
+}
+
+#
+# $(runtype) accumulated charge and average beam current
+#
+record(calc, "hc$(runtype)RunAccumulatedCharge") {
+  field(SCAN,"2 second")
+  field(INPA, "hc$(runtype)RunInProgress PP")
+  field(INPB, "ibcm1 CPP") 
+  field(INPC, "hc$(runtype)RunAccumulatedCharge.VAL PP")
+  field(CALC, "(B>0.5) ? (A*2.0*B + C) : C")
+  field(PREC, "10")
+  #field(FLNK, "hc$(runtype)RunTime")
+}
+record(calc, "hc$(runtype)RunTime") {
+  #field(SCAN, "Passive")
+  field(SCAN,"2 second")
+  field(INPA, "hc$(runtype)RunInProgress PP")
+  field(INPB, "ibcm1 CPP") 
+  field(INPC, "hc$(runtype)RunTime.VAL PP")
+  field(CALC, "(B>0.5) ? (A*2.0 + C) : C")
+  field(PREC, "8")
+  #field(FLNK, "hc$(runtype)RunAverageBeamCurrent")
+}
+
+record(calc, "hc$(runtype)RunAverageBeamCurrent") {
+  field(SCAN,"2 second")
+  #field(SCAN,"Passive")
+  field(INPA, "hc$(runtype)RunTime PP")
+  field(INPB, "hc$(runtype)RunAccumulatedCharge PP") 
+  field(CALC, "B/A")
+  field(PREC, "4")
+}
+
+#
+# This output resets the accumulated charge when a new run is started.
+# If the DAQ crashes RunInProgress will remain 1. So instead of using 
+# RunInProgress we just look for changes to the set run number. Which
+# is set in the CODA start_of_run script.
+#
+record(calcout, "hc$(runtype)RunChargeReset") {
+  field(OOPT, "On Change")
+  field(DOPT, "Use OCAL") # to set OUT
+  field(OUT,  "hc$(runtype)RunAccumulatedCharge CA")
+  field(INPA, "hc$(runtype)RunNumber CP")
+  field(CALC, "A")
+  field(OCAL, "0.0")
+  field(PREC, "4")
+  field(FLNK, "hc$(runtype)ResetRunTime")
+}
+record(calcout, "hc$(runtype)ResetRunTime") {
+  field(SCAN, "Passive")
+  field(OUT,  "hc$(runtype)RunTime CA")
+  field(INPA, "hc$(runtype)RunTime PP")
+  field(CALC, "0.0001")
+}
+
+
