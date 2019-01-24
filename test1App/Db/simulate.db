@@ -1,137 +1,85 @@
+##
+## simulate all the PVs used 
+## Should be commented out by default
 #
-# simulate
+#record(longin, "hcHMSRunNumber") {
+#  field(DESC, "hallc HMS COIN run number")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
+#record(longin, "hcSHMSRunNumber") {
+#  field(DESC, "hallc SHMS COIN run number")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
+#record(longin, "hcCOINRunNumber") {
+#  field(DESC, "hallc CODA COIN run number")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
 #
-record(longin, "hcHMSRunNumber") {
-  field(DESC, "hallc HMS COIN run number")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-record(longin, "hcSHMSRunNumber") {
-  field(DESC, "hallc SHMS COIN run number")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-record(longin, "hcCOINRunNumber") {
-  field(DESC, "hallc CODA COIN run number")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-
-record(longin, "hcHMSRunInProgress") {
-  field(DESC, "HMS run in progress")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-record(longin, "hcSHMSRunInProgress") {
-  field(DESC, "SHMS run in progress")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-record(longin, "hcCOINRunInProgress") {
-  field(DESC, "COIN run in progress")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-}
-
-
+#record(longin, "hcHMSRunInProgress") {
+#  field(DESC, "HMS run in progress")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
+#record(longin, "hcSHMSRunInProgress") {
+#  field(DESC, "SHMS run in progress")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
+#record(longin, "hcCOINRunInProgress") {
+#  field(DESC, "COIN run in progress")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#}
 #
-# ibcm1
-#
-record(ai, "ibcm1") {
-  field(DESC, "bcm1")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "1 second")
-}
-
-record(longin, "hcBDSSELECT") {
-  field(DESC, "sim hcBDSSELECT")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "2 second")
-}
-
-
-#record(calc, "hcHMSRunAccumulatedCharge") {
-#  field(SCAN,"2 second")
-#  field(INPA, "hcHMSRunInProgress NPP")
-#  field(INPB, "ibcm1 CP") 
-#  field(INPC, "hcHMSRunAccumulatedCharge.VAL NPP")
-#  field(CALC, "A*2.0*B + C")
-#  field(PREC, "4")
-#  info(Q:group, {
-#      "hcHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
-#  })
 #
 ##
-## accumulated charge for hallc bcm. 
-## Only integrates charge when hcHMSRunInProgress is true (ie, DAQ is taking data)
+## ibcm1
 ##
-#record(calc, "hcHMSRunAccumulatedCharge") {
-#  field(SCAN,"2 second")
-#  field(INPA, "hcHMSRunInProgress NPP")
-#  field(INPB, "ibcm1 CP") 
-#  field(INPC, "hcHMSRunAccumulatedCharge.VAL NPP")
-#  field(CALC, "A*2.0*B + C")
-#  field(PREC, "4")
-#  info(Q:group, {
-#      "hcHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
-#  })
+#record(ai, "ibcm1") {
+#  field(DESC, "bcm1")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "1 second")
 #}
-#record(calc, "hcSHMSRunAccumulatedCharge") {
-#  field(SCAN,"2 second")
-#  field(INPA, "hcSHMSRunInProgress NPP")
-#  field(INPB, "ibcm1 CP") 
-#  field(INPC, "hcSHMSRunAccumulatedCharge.VAL NPP")
-#  field(CALC, "A*2.0*B + C")
-#  field(PREC, "4")
-#  info(Q:group, {
-#      "hcSHMSRun":{"AccumulatedCharge": {+channel:"VAL"}}
-#  })
-#}
-#record(calc, "hcHMSRunTime") {
-#  field(INPA, "hcHMSRunInProgress NPP")
-#  field(INPB, "ibcm1 CP") 
-#  field(INPC, "hcHMSRunTime.VAL NPP")
-#  field(CALC, "A*2.0 + C")
-#  field(PREC, "8")
-#}
-#record(calc, "hcSHMSRunTime") {
+#
+#record(longin, "hcBDSSELECT") {
+#  field(DESC, "sim hcBDSSELECT")
+#  field(DTYP, "Soft Channel")
 #  field(SCAN, "2 second")
-#  field(INPA, "hcSHMSRunInProgress NPP")
-#  field(INPB, "ibcm1 CP") 
-#  field(INPC, "hcSHMSRunTime.VAL NPP")
-#  field(CALC, "A*2.0 + C")
-#  field(PREC, "8")
 #}
 #
-
-#########################################################
 #
-# Spectrometer angle (mirror)
 #
-record(ai, "ecHMS_Angle") {
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-  #field(PREC, "4")
-}
-record(ai, "ecSHMS_Angle") {
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-  #field(PREC, "4")
-}
-
+##########################################################
+##
+## Spectrometer angle (mirror)
+##
+#record(ai, "ecHMS_Angle") {
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#  #field(PREC, "4")
+#}
+#record(ai, "ecSHMS_Angle") {
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#  #field(PREC, "4")
+#}
 #
-# Spectrometer Momentum (mirror)
+##
+## Spectrometer Momentum (mirror)
+##
+#record(ai, "HMS_Momentum") {
+#  field(DESC, "HMS Momentum")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#  #field(PREC, "4")
+#}
+#record(ai, "SHMS_Momentum") {
+#  field(DESC, "SHMS Momentum")
+#  field(DTYP, "Soft Channel")
+#  field(SCAN, "Passive")
+#  #field(PREC, "4")
+#}
 #
-record(ai, "HMS_Momentum") {
-  field(DESC, "HMS Momentum")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-  #field(PREC, "4")
-}
-record(ai, "SHMS_Momentum") {
-  field(DESC, "SHMS Momentum")
-  field(DTYP, "Soft Channel")
-  field(SCAN, "Passive")
-  #field(PREC, "4")
-}
-
