@@ -5,6 +5,7 @@ include $(TOP)/configure/CONFIG
 
 # Install databases, templates & substitutions like this
 DB += hallc.db
+DB += simulate.db
 DB += run_settings.db
 DB += daq_run.db
 DB += circle.db
