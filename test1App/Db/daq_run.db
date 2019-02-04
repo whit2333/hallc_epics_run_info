@@ -11,6 +11,8 @@ record(longin, "hc$(runtype)IntRunNumber") {
 #
 # $(runtype) accumulated charge and average beam current
 #
+# only adds charge if beam current > 0.5 uA.
+#
 record(calc, "hc$(runtype)RunAccumulatedCharge") {
   field(SCAN,"2 second")
   field(INPA, "hc$(runtype)RunInProgress PP")
@@ -20,6 +22,7 @@ record(calc, "hc$(runtype)RunAccumulatedCharge") {
   field(PREC, "10")
   #field(FLNK, "hc$(runtype)RunTime")
 }
+
 record(calc, "hc$(runtype)RunTime") {
   #field(SCAN, "Passive")
   field(SCAN,"2 second")

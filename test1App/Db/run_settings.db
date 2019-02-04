@@ -10,11 +10,14 @@
 #
 
 record(longin, "hcRunSettingNumber") {
+  field(VAL,  "0")
+  field(PINI, "YES")
   field(SCAN, "Passive")
   field(DESC, "hallc run plan setting number")
   field(DTYP, "Soft Channel")
 }
 record(longin, "hcRunSettingReconfigured") {
+  field(VAL,  "0")
   field(SCAN, "Passive")
   field(DESC, "Waits to increment the RunSettingNumber")
   field(DTYP, "Soft Channel")
@@ -23,6 +26,7 @@ record(longin, "hcRunSettingReconfigured") {
 #########################################
 #
 record(ai, "hcRunSettingHMSAngle") {
+  field(VAL,  "0")
   field(DESC, "HMS Angle for current run setting")
   field(DTYP, "Soft Channel")
   field(SCAN, "Passive")
@@ -106,6 +110,8 @@ record(calc, "hcCreateNewRunSetting") {
   field(PREC, "2")
   field(FLNK,"hcRunSettingIncrement")
 }
+
+# increments RunSettingNumber if (hcRunSettingReconfigured != 0)
 record(calcout, "hcRunSettingIncrement") {
   field(OOPT, "Transition To Zero")
   field(DOPT, "Use OCAL") # to set OUT
@@ -138,7 +144,7 @@ record(dfanout, "hcStartNewRunSetting"){
   field(OUTA, "hcRunSettingReconfigured CA")
   field(OUTB, "hcRunSettingIncrement CA")
   field(OUTC, "hcRunSettingChargeReset CA") 
-  field(OUTC, "hcRunSettingChargeReset CA") 
+  #field(OUTC, "hcRunSettingChargeReset CA") 
 }
 
 ##############################################
