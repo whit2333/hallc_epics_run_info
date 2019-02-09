@@ -16,7 +16,7 @@ dbLoadTemplate "db/user.substitutions"
 
 #dbLoadRecords "db/test1Version.db", "user=whit"
 
-#dbLoadRecords "db/simulate.db"
+dbLoadRecords "db/simulate.db"
 
 dbLoadRecords "db/hallc.db"
 dbLoadRecords "db/daq_run.db", "runtype=COIN"
