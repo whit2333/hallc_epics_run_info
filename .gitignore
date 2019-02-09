@@ -1,0 +1,9 @@
+bin/
+lib/
+db/
+dbd/
+include/
+iocBoot/iocscandalizer/envPaths
+*/O.linux-x86_64
+*/*/O.linux-x86_64
+*/*/O.Common
