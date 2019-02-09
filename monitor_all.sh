@@ -1,6 +1,6 @@
 #!/bin/bash
 
-camonitor                                \
+pvmonitor                                \
 hcStartNewRunSetting                     \
 hcCOINIntRunNumber                       \
 hcSHMSIntRunNumber                       \
